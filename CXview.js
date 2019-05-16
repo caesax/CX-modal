@@ -20,13 +20,32 @@ CXview = {
     },
 
     open: function(evt) {
-        document.querySelector(".cxmodal-content").innerHTML = evt.currentTarget.modal.contentElem;
+        var modal = evt.currentTarget.modal;
+        var content = CXview.getContent(modal);
+        document.querySelector(".cxmodal-content").innerHTML = content;
         evt.preventDefault();
         CXview.elem.style.display = "flex";
     },
 
     close: function() {
         CXview.elem.style.display = "none";
+    },
+
+    getContent: function(m) {
+        if (m.dataType == 'image') {
+            var _return = '<img src="' + m.dataRef + '" alt="img">';
+            if (m.metaData) {
+                _return += '<div class="cxmodal-meta">' + m.metaData + '</div>';
+            }
+            return _return;
+        }
+        if (m.dataType == 'ajax') {
+            return '<h3>AJAX</h3><p>Ej implementerat än så länge...</p>';
+        }
+        if (m.dataType == 'alert') {
+            return '<h3>ALERT</h3><p>' + m.dataRef + '</p>\
+            <div class="cxmodal-meta"> <button onclick="CXview.close()" type="button">OK</button> </div>';
+        }
     }
     
 }
