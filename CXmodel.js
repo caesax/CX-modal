@@ -32,8 +32,12 @@ CXmodel = function(elem) {
     this.getType = function() {
         this.dataType = 'alert';
         var ext = this.dataRef.split('.').pop();
-        if (ext == 'jpg' || ext == 'png') this.dataType = 'image';
-        if (ext == 'php?e=1') this.dataType = 'ajax';
+        ext = ext.split('?')[0].toLowerCase();
+        console.log(ext);
+        var tryExt = ['jpg', 'jpeg', 'gif', 'png'];
+        if (tryExt.includes(ext)) this.dataType = 'image';
+        tryExt = ['php', 'htm', 'html', 'txt'];
+        if (tryExt.includes(ext)) this.dataType = 'ajax';
         this.getMeta();
     }
 

@@ -40,7 +40,7 @@ CXview = {
             return _return;
         }
         if (m.dataType == 'ajax') {
-            return '<h3>AJAX</h3><p>Ej implementerat än så länge...</p>';
+            CXcontrol.ajax(m.dataRef);
         }
         if (m.dataType == 'alert') {
             return '<h3>ALERT</h3><p>' + m.dataRef + '</p>\

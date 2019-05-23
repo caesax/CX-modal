@@ -12,6 +12,21 @@ CXcontrol = {
                 elems[i].addEventListener("click", CXview.open, false);
             }
         }
+    },
+
+    ajax: function(url) {
+        var xhr; // Object för Ajax-anropet
+        if (XMLHttpRequest) { xhr = new XMLHttpRequest(); }
+        else { alert("Tyvärr inget stöd för AJAX, så data kan inte läsas in"); return false; }
+        xhr.open("GET", url, true);
+        xhr.send(null); // Skicka begäran till servern
+        xhr.onreadystatechange = function () { // Funktion för att avläsa status i kommunikationen
+            if (xhr.readyState === 4) { // Då kommunikationen är klar blir readyState 4
+                if (xhr.status == 200) {
+                    document.querySelector(".cxmodal-content").innerHTML = xhr.response;
+                }
+            } 
+        };
     }
 
 }
