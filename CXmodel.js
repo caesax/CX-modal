@@ -1,7 +1,17 @@
+//--------------------------------------------------------------------------
+// Datamodellklassen CXmodel
+//--------------------------------------------------------------------------
+
 CXmodel = function(elem) {
 
+    /**
+     * "Event-elementet" som ligger till grund för datamodellen
+     */
     this.targetElem = elem;
 
+    /**
+     * Själva data-innehållet
+     */
     this.data = {
         type: "",
         message: "",
@@ -10,20 +20,28 @@ CXmodel = function(elem) {
         description: ""
     };
 
+    /**
+     * Inställningarna för varje enskilt objekt (modal)
+     */
     this.settings = {};
 
 }
 
+// Prototypen
 CXmodel.prototype = {
 
     constructor: CXmodel,
 
+    /**
+     * Objektet initieras
+     *
+     * @return  {[type]}  [return description]
+     */
     init: function() {
 
-        console.log(this.targetElem);
+        console.log(this.targetElem);  // TODO: ta bort console.log-test
 
-        // TODO kontrollera options
-        this.settings = Object.assign(this.settings, CXcontrol.settings, CXcontrol.options);
+        this.settings = Object.assign(this.settings, CXcontrol.settings, CXcontrol.options); // TODO: Validera options
         
         if (this.targetElem) {
             
@@ -33,7 +51,7 @@ CXmodel.prototype = {
             if (dataset.cxmodalDraggable) localSettings.draggable = dataset.cxmodalDraggable;
             this.settings = Object.assign(this.settings, localSettings);
 
-            console.log(dataset);
+            console.log(dataset);  // TODO: ta bort console.log-test
 
             this.getData();
 
@@ -41,7 +59,12 @@ CXmodel.prototype = {
 
     },
 
-    getData: function() {
+    /**
+     * [getData description]
+     *
+     * @return  {null}
+     */
+    getData: function() {  // TODO: Förbättra och generalisera denna kod
 
         var dataset = this.targetElem.dataset;
 
@@ -49,6 +72,7 @@ CXmodel.prototype = {
         if (!this.data.href) {
             this.data.href = this.targetElem.getAttribute("src");
         }
+        if (dataset.cxmodal > "") this.data.href = dataset.cxmodal;
         if (typeof dataset.cxmodalConfirm !== "undefined") {
             this.data.message = dataset.cxmodalConfirm ? dataset.cxmodalConfirm: this.data.href;
             this.data.type = "confirm";
@@ -74,9 +98,16 @@ CXmodel.prototype = {
 
     },
 
-    // TODO: Förbättra getType
-    // TODO: lägg till data.type: 'confirm', 'prompt'..
+    
+    /**
+     * Hämtar data-typ baserat på värdet för data.href
+     *
+     * @return  {[type]}  [return description]
+     */
     getType: function() {
+
+        // TODO: Förbättra getType
+        // TODO: lägg till data.type: 'confirm', 'prompt'..
 
         this.data.type = 'alert';
         var ext = this.data.href.split('.').pop();
@@ -86,7 +117,7 @@ CXmodel.prototype = {
         tryExt = ['php', 'htm', 'html', 'txt'];
         if (tryExt.includes(ext)) this.data.type = 'ajax';
 
-        console.log(this.data);
+        console.log(this.data);  // TODO: ta bort console.log-test
 
     }
 

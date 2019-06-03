@@ -1,5 +1,12 @@
+//--------------------------------------------------------------------------
+// Klassen CXview - som sköter renderingen av modalen
+//--------------------------------------------------------------------------
+
 CXview = {
 
+    /**
+     * HTML-mall för modal-fönstret
+     */
     TEMPLATE: '\
         <div class="cxmodal__window">\
             <div class="cxmodal__header"></div>\
@@ -7,16 +14,26 @@ CXview = {
             <div class="cxmodal__body"></div>\
         </div>',
 
+    /* Referens till modalfönstret */
     elem: null,
 
+    /* Referens till aktuellt data-objekt */
     modal: null,
 
+    /* Referens till modalens overlay (bakgrund) */
     bgrElem: null,
 
+    /* Offset-värden för fönstret som används vid drag */
     offsetX: 0,
-
     offsetY: 0,
 
+    /**
+     * [init description]
+     *
+     * @param   {object}  settings
+     *
+     * @return  {null}
+     */
     init: function(settings) {
         if (CXview.bgrElem) document.body.removeChild(CXview.bgrElem); // reset
         var newElem = document.createElement("div");
@@ -56,6 +73,9 @@ CXview = {
         CXview.elem = newElem.querySelector(".cxmodal__window");
     },
 
+    /**
+     * 
+     */
     open: function(content, settings, modal){
         CXview.modal = modal;
         CXview.init(settings);
@@ -72,6 +92,11 @@ CXview = {
         console.log(CXview.elem);
     },
 
+    /**
+     * [close description]
+     *
+     * @return  {[type]}  [return description]
+     */
     close: function() {
         CXview.bgrElem.style.display = "none";
         if (CXview.modal) {
@@ -79,6 +104,11 @@ CXview = {
         }
     },
 
+    /**
+     * [dragStart description]
+     *
+     * @return  {[type]}  [return description]
+     */
     dragStart: function (event) {
         CXview.elem.style.opacity = 0.95;
         CXview.offsetX = event.offsetX;
@@ -99,7 +129,9 @@ CXview = {
     },
 
     /**
-     * Avslutar drag'n'move
+     * [dragStop description]
+     *
+     * @return  {[type]}  [return description]
      */
     dragStop: function () {
         CXview.elem.style.opacity = 1;

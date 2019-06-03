@@ -1,12 +1,27 @@
+//--------------------------------------------------------------------------
+// Kontrollklassen CXcontrol
+//--------------------------------------------------------------------------
+
 CXcontrol = {
 
+    /**
+     * Default settings
+     */
     settings: {
         background: "close",    // close | block | none
         draggable: true         // true | false
     },
 
-    options: {},        // Add or change settings externally
+    /**
+     * Add or change settings externally
+     */
+    options: {},  
 
+    /**
+     * Initierar alla modal-objekt på sidan
+     *
+     * @return  {null}
+     */
     init: function() {
 
         var elems = document.querySelectorAll("[data-cxmodal-alert], [data-cxmodal-confirm], [data-cxmodal]");
@@ -28,8 +43,14 @@ CXcontrol = {
 
     },
 
-    // TODO Förbättra ajax-funktionen
-    ajax: function(url) {
+    /**
+     * [ajax description]
+     *
+     * @param   {[type]}  url  [url description]
+     *
+     * @return  {[type]}       [return description]
+     */
+    ajax: function(url) {  // TODO Förbättra ajax-funktionen
         var xhr;
         if (XMLHttpRequest) { xhr = new XMLHttpRequest(); }
         else { alert("Tyvärr inget stöd för AJAX, så data kan inte läsas in"); return false; }
@@ -44,6 +65,13 @@ CXcontrol = {
         };
     },
 
+    /**
+     * [open description]
+     *
+     * @param   {[type]}  evt  [evt description]
+     *
+     * @return  {[type]}       [return description]
+     */
     open: function(evt) {
         var content = {}, settings = {};
         if (typeof evt == "string") {  // If alert from override (no event)
@@ -51,6 +79,7 @@ CXcontrol = {
             CXview.init(CXcontrol.settings);
             content.header = "ALERT";
             content.body = evt;
+            content.footer = '<button onclick="CXview.close()" type="button">OK</button>';
             CXview.open(content, settings);
         } else {
             var modal;
@@ -82,6 +111,13 @@ CXcontrol = {
         }
     },
 
+    /**
+     * [getContent description]
+     *
+     * @param   {object}  m  [m description]
+     *
+     * @return  {object}     [return description]
+     */
     getContent: function(m) {
         var content = {};
         content.type = m.data.type;
