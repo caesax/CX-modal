@@ -3,8 +3,8 @@ A simple but flexible modal/lightbox
 
 
 ## Installation
-All styling is done with CSS so you have to include both the CSS- and JavaScript.
-Download **cxmodal.min.js** and **cxmodal.min.css** and put them in your `<head>` tag like this:
+All styling is done with CSS so you have to include both the CSS- and JavaScript.\
+Download _**cxmodal.min.js**_ and _**cxmodal.min.css**_ and put them in your `<head>` tag like this:
 
   `<link rel="stylesheet" href="cxmodal/cxmodal.min.css">`
   `<script src="cxmodal/cxmodal.min.js"></script>`
