@@ -1,5 +1,5 @@
 # CX-modal
-A simple but flexible modal/lightbox
+A simple but flexible modal/lightbox that easily can be set to be both draggable, modal and with or without overlay.
 
 
 ## Installation
@@ -17,3 +17,19 @@ By default, cxmodal acts on all elements using the 'data-cxmodal' attribute. An 
     <img data-cxmodal src="img/nice_photo.jpg" alt="Very Nice Photo">
     <a data-cxmodal-alert="Open as AJAX" href="edit.php" title="Edit your page">Edit</a>
 
+## Configuration
+Every modal-window can be easily customized both individually and generally with either attributes or simple javascript. The modal can have both a **title** (window-header) and a **description** (window-footer). It can also be draggable or not and the ability to interact with the background can be toggled on and off.
+
+    <a data-cxmodal-alert="This text will show up in the a custom alert-window" data-cxmodal-titel="Important">...
+    <img data-cxmodal data-cxmodal-description src="image/painting.jpg" alt="description goes here">
+    
+    <script>
+        CXcontrol.options = {
+            draggable: "true",
+            background: "block"
+        }
+    </script>
+    
+    
+
+    
