@@ -1,4 +1,11 @@
 /* TODO: kontrollera CSS gentemot BEM */
+
+$border: #777;
+$header: #eee;
+$header-drag: #fff;
+$modal: #fff;
+$close: #aaa;
+
 .cxmodal {
   display: none;
   position: fixed;
@@ -8,7 +15,7 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0,0,0,0.4);
 }
 
 .cxmodal_background-none {
@@ -17,14 +24,12 @@
 }
 
 .cxmodal__window {
-  background-color: #fff;
+  background-color: $modal;
   margin: auto;
-  border: 1px solid #777;
-  box-shadow: 2px 2px 1rem rgba(0, 0, 0, 0.8);
+  border: 1px solid $border;
+  box-shadow: 2px 2px 1rem rgba(0,0,0,0.8);
   border-radius: 0.5em;
   max-width: 90vw;
-  height: -webkit-min-content;
-  height: -moz-min-content;
   height: min-content;
   overflow: hidden;
   position: relative;
@@ -32,7 +37,7 @@
 }
 
 .cxmodal__header {
-  background: #eee;
+  background: $header;
   color: black;
   padding: 0.55rem 0.5rem 0.45rem;
   font-size: 1rem;
@@ -43,14 +48,11 @@
 
 .cxmodal_draggable .cxmodal__header {
   cursor: move;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  user-select: none;
 }
 
 .cxmodal_draggable .cxmodal__header:hover {
-  background: #fff;
+  background: $header-drag;
 }
 
 .cxmodal__body {
@@ -59,9 +61,9 @@
 }
 
 .cxmodal__body img {
-  max-width: 100%;
-  max-height: 80vh;
-  display: block;
+    max-width: 100%;
+    max-height: 80vh;
+    display: block;
 }
 
 .cxmodal__footer {
@@ -71,17 +73,14 @@
 
 /* The Close Button */
 .cxmodal__close {
-  color: #aaa;
+  color: $close;
   position: absolute;
   top: 0;
   right: 0;
   font-size: 1.8rem;
   font-weight: bold;
   padding: 0 0.5rem;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  user-select: none;
 }
 
 .cxmodal__close:hover,

@@ -1,53 +1,112 @@
 CXview = {
 
     TEMPLATE: '\
-        <div class="cxmodal">\
-            <span class="close">&times;</span>\
-            <div class="cxmodal-content"></div>\
+        <div class="cxmodal__window">\
+            <div class="cxmodal__header"></div>\
+            <span class="cxmodal__close">&times;</span>\
+            <div class="cxmodal__body"></div>\
         </div>',
 
     elem: null,
 
-    init: function() {
+    modal: null,
+
+    bgrElem: null,
+
+    offsetX: 0,
+
+    offsetY: 0,
+
+    init: function(settings) {
+        if (CXview.bgrElem) document.body.removeChild(CXview.bgrElem); // reset
         var newElem = document.createElement("div");
         newElem.innerHTML = CXview.TEMPLATE;
-        newElem.className = "cxmodal-background";
-        document.body.appendChild(newElem);
-        newElem.querySelector(".close").addEventListener("click", function() {
+        newElem.className = "cxmodal";
+        if (settings) {
+                newElem.classList.add("cxmodal_background-" + settings.background);
+            if (settings.background == "close") {
+                newElem.addEventListener("click", function() {
+                    CXview.close();
+                });
+            }
+            if (settings.draggable) {
+                newElem.classList.add("cxmodal_draggable");
+                var winHeader = newElem.querySelector(".cxmodal__header");
+                winHeader.addEventListener("mousedown", function (e) {
+                    CXview.dragStart(e);
+                    document.onmousemove = function (e) {
+                        CXview.drag(e);
+                    }
+                    document.onmouseup = function (e) {
+                        CXview.dragStop();
+                        e.stopPropagation();
+                    }
+                });
+            }
+        }
+        newElem.querySelector(".cxmodal__window").addEventListener("click", function(event) {
+            event.stopPropagation();
+        });
+        newElem.querySelector(".cxmodal__close").addEventListener("click", function() {
             CXview.close();
         });
-        CXview.elem = newElem;
+        
+        document.body.appendChild(newElem);
+        CXview.bgrElem = newElem;
+        CXview.elem = newElem.querySelector(".cxmodal__window");
     },
 
-    open: function(evt) {
-        var modal = evt.currentTarget.modal;
-        var content = CXview.getContent(modal);
-        document.querySelector(".cxmodal-content").innerHTML = content;
-        evt.preventDefault();
-        CXview.elem.style.display = "flex";
+    open: function(content, settings, modal){
+        CXview.modal = modal;
+        CXview.init(settings);
+        CXview.elem.classList.add("cxmodal_" + content.type);
+        document.querySelector(".cxmodal__header").innerHTML = content.header;
+        document.querySelector(".cxmodal__body").innerHTML = content.body;
+        if (content.footer) {
+            var newElem = document.createElement("div");
+            newElem.className = "cxmodal__footer";
+            newElem.innerHTML = content.footer;
+            CXview.elem.appendChild(newElem);
+        }
+        CXview.bgrElem.style.display = "flex";
+        console.log(CXview.elem);
     },
 
     close: function() {
-        CXview.elem.style.display = "none";
+        CXview.bgrElem.style.display = "none";
+        if (CXview.modal) {
+            CXcontrol.open(CXview.modal);
+        }
     },
 
-    getContent: function(m) {
-        if (m.dataType == 'image') {
-            var _return = '<img src="' + m.dataRef + '" alt="img">';
-            if (m.metaData) {
-                _return += '<div class="cxmodal-meta">' + m.metaData + '</div>';
-            }
-            return _return;
-        }
-        if (m.dataType == 'ajax') {
-            CXcontrol.ajax(m.dataRef);
-        }
-        if (m.dataType == 'alert') {
-            return '<h3>ALERT</h3><p>' + m.dataRef + '</p>\
-            <div class="cxmodal-meta"> <button onclick="CXview.close()" type="button">OK</button> </div>';
-        }
+    dragStart: function (event) {
+        CXview.elem.style.opacity = 0.95;
+        CXview.offsetX = event.offsetX;
+        CXview.offsetY = event.offsetY;
+        CXview.elem.style.margin = 0;
+        document.cursor = "move";
+        CXview.drag(event);
+    },
+
+    /**
+     * ...
+     * 
+     * @param {MouseEvent} event 
+     */
+    drag: function (event) {
+        CXview.elem.style.left = event.clientX - CXview.offsetX + "px";
+        CXview.elem.style.top = event.clientY - CXview.offsetY + "px";
+    },
+
+    /**
+     * Avslutar drag'n'move
+     */
+    dragStop: function () {
+        CXview.elem.style.opacity = 1;
+        CXview.elem.style.cursor = "default";
+        document.onmousemove = null;
+        document.onmouseup = null;
     }
     
 }
 
-window.addEventListener("load", CXview.init);
