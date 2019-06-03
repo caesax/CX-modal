@@ -22,7 +22,7 @@ Every modal-window can be easily customized both individually and generally with
 
     <a data-cxmodal-alert="This text will show up in the a custom alert-window" data-cxmodal-titel="Important">...</a>
     <img data-cxmodal data-cxmodal-description src="image/painting.jpg" alt="description goes here">
-    <a data-cxmodal href="help.html" *data-cxmodal-draggable*="false">Help</a>
+    <a data-cxmodal href="help.html" data-cxmodal-draggable="false">Help</a>
     
 And/or put some options in a script-tag:
 
