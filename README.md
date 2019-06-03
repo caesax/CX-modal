@@ -6,6 +6,6 @@ A simple but flexible modal/lightbox
 Hur blir detta?
 
 
-# Usage
+## Usage
 Så här gör man
 
