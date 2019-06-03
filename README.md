@@ -11,9 +11,9 @@ Download _**cxmodal.min.js**_ and _**cxmodal.min.css**_ and put them in your `<h
 
 
 ## Usage
-Så här gör man
+By default, cxmodal acts on all elements using the 'data-cxmodal' attribute. An element with this attribute triggers the modal. Preferably put the attributes on links `<a>` but you can also use the value of the attribute to open up the modal.
 
-javascript at the bottom of the page before the closing `</body>` tag.
+    <a data-cxmodal href="img/large_picture.png"><img src="img/small_picture.png" alt="my picture"></a>
+    <img data-cxmodal src="img/nice_photo.jpg" alt="Very Nice Photo">
+    <a data-cxmodal-alert="Open as AJAX" href="edit.php" title="Edit your page">Edit</a>
 
-	<script src="//code.jquery.com/jquery-latest.js"></script>
-	<script src="//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
