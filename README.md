@@ -41,7 +41,7 @@ And/or put some options in a script-tag:
 The model tries to find the right type _(image, ajax, message, iframe)_ based on the content . If the content is not set directly it will look in the elements href-attribute and then in the src-attribute.
 
 **cxmodal-image, cxmodal-ajax, cxmodal-iframe**\
-Use this to be sure to set the right datatype.
+Use this to be sure to set the right datatype.\
 `<a data-cxmodal-ajax href="help.html">Click Me</a>`\
 `<a data-cxmodal-image="myPicture.jpg" href="#">Click Me</a>`\
 
@@ -71,4 +71,19 @@ Sets the description of the content and is shown in the modal-windows footer (bo
 You need this to control the title for the message in a "two-step"-modal.
 
 ## Defaults
-    
+    defaults = {
+        draggable: "true",              // true | false
+        background: "close",            // block | close | none
+        defaultTitle: "title",          // title | alt | none
+        defaultDescription: "alt",      // title | alt | none
+        alertTitle: "ALERT",            // * | none
+        confirmTitle: "CONFIRM"         // * | none
+    }
+
+To set your own defaults use javascript last in your body-tag like this:
+    <script>
+        CXcontrol.options = {
+            draggable: "false",
+            background: "block"
+        }
+    </script>
