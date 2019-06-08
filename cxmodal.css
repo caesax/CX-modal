@@ -41,6 +41,10 @@
   min-height: 2rem;
 }
 
+.cxmodal_alert .cxmodal__header {
+  color: #900;
+}
+
 .cxmodal_draggable .cxmodal__header {
   cursor: move;
   -webkit-user-select: none;
@@ -67,6 +71,11 @@
 .cxmodal__footer {
   padding: 1.5rem;
   text-align: center;
+}
+
+.cxmodal__footer button {
+  display: inline-block;
+  margin: 0 2rem;
 }
 
 /* The Close Button */

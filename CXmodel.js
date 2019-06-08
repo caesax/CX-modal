@@ -14,10 +14,12 @@ CXmodel = function(elem) {
      */
     this.data = {
         type: "",
-        message: "",
         href: "",
         title: "",
-        description: ""
+        description: "",
+        message: "",
+        messageType: "",
+        messageTitle: ""
     };
 
     /**
@@ -38,19 +40,16 @@ CXmodel.prototype = {
      * @return  {[type]}  [return description]
      */
     init: function() {
-
-        console.log(this.targetElem);  // TODO: ta bort console.log-test
-
-        this.settings = Object.assign(this.settings, CXcontrol.settings, CXcontrol.options); // TODO: Validera options
         
         if (this.targetElem) {
             
             var dataset = this.targetElem.dataset;
-            var localSettings = {}
+            var localSettings = Object.assign(this.settings, CXcontrol.settings);
+            console.log(localSettings);  // TODO: ta bort console.log-test
             if (dataset.cxmodalBackground) localSettings.background = dataset.cxmodalBackground;
             if (dataset.cxmodalDraggable) localSettings.draggable = dataset.cxmodalDraggable;
-            this.settings = Object.assign(this.settings, localSettings);
-
+            this.settings = localSettings;
+            console.log(this.settings);  // TODO: ta bort console.log-test
             console.log(dataset);  // TODO: ta bort console.log-test
 
             this.getData();
@@ -73,17 +72,31 @@ CXmodel.prototype = {
             this.data.href = this.targetElem.getAttribute("src");
         }
         if (dataset.cxmodal > "") this.data.href = dataset.cxmodal;
-        if (typeof dataset.cxmodalConfirm !== "undefined") {
-            this.data.message = dataset.cxmodalConfirm ? dataset.cxmodalConfirm: this.data.href;
-            this.data.type = "confirm";
-        }
-        if (typeof dataset.cxmodalAlert !== "undefined") {
-            this.data.message = dataset.cxmodalAlert ? dataset.cxmodalAlert: this.data.href;
-            this.data.type = "alert";
+        if (typeof dataset.cxmodalAjax !== "undefined") {
+            this.data.href = dataset.cxmodalAjax ? dataset.cxmodalAjax: this.data.href;
+            this.data.type = "ajax";
         }
         if (typeof dataset.cxmodalIframe !== "undefined") {
             this.data.href = dataset.cxmodalIframe ? dataset.cxmodalIframe: this.data.href;
             this.data.type = "iframe";
+        }
+        if (typeof dataset.cxmodalImage !== "undefined") {
+            this.data.href = dataset.cxmodalImage ? dataset.cxmodalImage: this.data.href;
+            this.data.type = "image";
+        }
+        if (typeof dataset.cxmodalConfirm !== "undefined") {
+            this.data.message = dataset.cxmodalConfirm ? dataset.cxmodalConfirm: this.data.href;
+            this.data.messageType = "confirm";
+            if (dataset.cxmodalConfirmTitle) {
+                this.data.messageTitle = dataset.cxmodalConfirmTitle;
+            }
+        }
+        if (typeof dataset.cxmodalAlert !== "undefined") {
+            this.data.message = dataset.cxmodalAlert ? dataset.cxmodalAlert: this.data.href;
+            this.data.messageType = "alert";
+            if (dataset.cxmodalAlertTitle) {
+                this.data.messageTitle = dataset.cxmodalMessageTitle;
+            }
         }
         if (typeof dataset.cxmodalTitle !== "undefined") {
             this.data.title = dataset.cxmodalTitle ? dataset.cxmodalTitle: this.targetElem.getAttribute("title");
@@ -94,7 +107,7 @@ CXmodel.prototype = {
             if (!this.data.description && this.targetElem.querySelector("[alt]")) this.data.description = this.targetElem.querySelector("[alt]").getAttribute("alt");
         }
 
-        this.getType();
+        if (!this.data.type) this.guessType();
 
     },
 
@@ -104,20 +117,16 @@ CXmodel.prototype = {
      *
      * @return  {[type]}  [return description]
      */
-    getType: function() {
+    guessType: function() {
 
-        // TODO: Förbättra getType
-        // TODO: lägg till data.type: 'confirm', 'prompt'..
-
-        this.data.type = 'alert';
-        var ext = this.data.href.split('.').pop();
-        ext = ext.split('?')[0].toLowerCase();
-        var tryExt = ['jpg', 'jpeg', 'gif', 'png'];
-        if (tryExt.includes(ext)) this.data.type = 'image';
-        tryExt = ['php', 'htm', 'html', 'txt'];
-        if (tryExt.includes(ext)) this.data.type = 'ajax';
-
-        console.log(this.data);  // TODO: ta bort console.log-test
+            this.data.type="message";
+            var ext = this.data.href.split('.').pop();
+            ext = ext.split('?')[0].toLowerCase();
+            var tryExt = ['jpg', 'jpeg', 'gif', 'png'];
+            if (tryExt.includes(ext)) this.data.type = 'image';
+            tryExt = ['php', 'htm', 'html', 'txt'];
+            if (tryExt.includes(ext)) this.data.type = 'ajax';
+            if (this.data.href.substr(0, 4) == 'http') this.data.type = 'link';
 
     }
 

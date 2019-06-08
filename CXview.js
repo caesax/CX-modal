@@ -67,7 +67,6 @@ CXview = {
         newElem.querySelector(".cxmodal__close").addEventListener("click", function() {
             CXview.close();
         });
-        
         document.body.appendChild(newElem);
         CXview.bgrElem = newElem;
         CXview.elem = newElem.querySelector(".cxmodal__window");
@@ -97,9 +96,10 @@ CXview = {
      *
      * @return  {[type]}  [return description]
      */
-    close: function() {
+    close: function(ok) {
         CXview.bgrElem.style.display = "none";
-        if (CXview.modal) {
+        console.log(ok)
+        if (ok && CXview.modal) {
             CXcontrol.open(CXview.modal);
         }
     },

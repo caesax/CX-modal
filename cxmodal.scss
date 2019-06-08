@@ -5,6 +5,7 @@ $header: #eee;
 $header-drag: #fff;
 $modal: #fff;
 $close: #aaa;
+$alert: #900;
 
 .cxmodal {
   display: none;
@@ -46,6 +47,10 @@ $close: #aaa;
   min-height: 2rem;
 }
 
+.cxmodal_alert .cxmodal__header {
+  color: $alert;
+}
+
 .cxmodal_draggable .cxmodal__header {
   cursor: move;
   user-select: none;
@@ -69,6 +74,10 @@ $close: #aaa;
 .cxmodal__footer {
   padding: 1.5rem;
   text-align: center;
+}
+.cxmodal__footer button {
+  display: inline-block;
+  margin: 0 2rem;
 }
 
 /* The Close Button */

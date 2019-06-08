@@ -8,8 +8,10 @@ CXcontrol = {
      * Default settings
      */
     settings: {
-        background: "close",    // close | block | none
-        draggable: true         // true | false
+        background: "close",     // close | block | none
+        draggable: true,         // true | false
+        alertOverride: true,     // true | false
+        confirmOverride: true    // true | false
     },
 
     /**
@@ -24,7 +26,7 @@ CXcontrol = {
      */
     init: function() {
 
-        var elems = document.querySelectorAll("[data-cxmodal-alert], [data-cxmodal-confirm], [data-cxmodal]");
+        var elems = document.querySelectorAll("[data-cxmodal-alert], [data-cxmodal-confirm], [data-cxmodal-iframe], [data-cxmodal]");
         var i;
         for (i = 0; i < elems.length; i++) {           
             var modal = new CXmodel(elems[i]);
@@ -34,13 +36,19 @@ CXcontrol = {
             }
         }
 
+        if (CXcontrol.options) CXcontrol.settings = Object.assign(CXcontrol.settings, CXcontrol.options);
         // Skriver över alert-funktionen
-        window.alert = function (x) {
-            CXcontrol.open(x);
-        };
-
-        // TODO: Skriva över confirm-funktionen...
-
+        if (CXcontrol.settings.alertOverride) {
+            window.alert = function (x) {
+                CXcontrol.open(x, "alert");
+            };
+        }
+        // Skriver över confirm-funktionen
+        if (CXcontrol.settings.confirmOverride) {
+            window.confirm = function (x) {
+                CXcontrol.open(x, "confirm");
+            };
+        }
     },
 
     /**
@@ -72,14 +80,17 @@ CXcontrol = {
      *
      * @return  {[type]}       [return description]
      */
-    open: function(evt) {
+    open: function(evt, type) {
         var content = {}, settings = {};
-        if (typeof evt == "string") {  // If alert from override (no event)
+        if (type) {  // If alert or confirm from override (no event)
             settings = CXcontrol.settings;
-            CXview.init(CXcontrol.settings);
-            content.header = "ALERT";
+            CXview.init(settings);
+            content.header = type.toUpperCase();
             content.body = evt;
-            content.footer = '<button onclick="CXview.close()" type="button">OK</button>';
+            content.footer = '<button onclick="CXview.close(true)" type="button">OK</button>';
+            if (type == "confirm") {
+                content.footer = '<button onclick="CXview.close(false)" type="button">Cancel</button> ' + content.footer;
+            }
             CXview.open(content, settings);
         } else {
             var modal;
@@ -87,32 +98,30 @@ CXcontrol = {
                 modal = evt.currentTarget.modal;
                 modal.init();
                 evt.preventDefault();
-                if (modal.data.message) {
-                    modal.data.type = "alert";
-                    content = CXcontrol.getContent(modal);
-                    settings = modal.settings;
-                    if (modal.data.href !== modal.data.message) {
-                        CXview.open(content, settings, modal);
-                    } else {
-                        CXview.open(content, settings);
-                    }
+                content = CXcontrol.getContent(modal);
+                settings = modal.settings;
+                console.log(modal.data);
+                if (modal.data.message && (modal.data.message !== modal.data.href)) {
+                    CXview.open(content, settings, modal);
                 } else {
-                    content = CXcontrol.getContent(modal);
-                    settings = modal.settings;
                     CXview.open(content, settings);
                 } 
             } else {
                 modal = evt;
-                modal.init();
-                content = CXcontrol.getContent(modal);
-                settings = modal.settings;
-                CXview.open(content, settings);
+                if (modal.data.type == 'link') {
+                    location.href = modal.data.href;
+                } else {
+                    modal.data.messageType = "";
+                    content = CXcontrol.getContent(modal);
+                    settings = modal.settings;
+                    CXview.open(content, settings);
+                }
             }
         }
     },
 
     /**
-     * [getContent description]
+     * Hämtar innehållet i modalen
      *
      * @param   {object}  m  [m description]
      *
@@ -130,10 +139,22 @@ CXcontrol = {
             content.body = CXcontrol.ajax(m.data.href);
             content.header = m.data.title ? m.data.title : "AJAX";
         }
-        if (m.data.type == 'alert') {
-            content.header = m.data.title ? m.data.title : "ALERT";
+        if (m.data.type == 'iframe') {
+            content.body = '<iframe src="' + m.data.href + '"></iframe>';
+            content.header = m.data.title ? m.data.title : "IFRAME";
+            content.footer = m.data.description;
+        }
+        if (m.data.messageType == 'alert') {
+            content.type = 'alert';
+            content.header = m.data.messageTitle ? m.data.messageTitle : "ALERT";
             content.body =  '<p>' + m.data.message + '</p>';
-            content.footer = '<button onclick="CXview.close()" type="button">OK</button>';
+            content.footer = '<p><button onclick="CXview.close(true)" type="button">OK</button></p>';
+        }
+        if (m.data.messageType == 'confirm') {
+            content.type = 'confirm';
+            content.header = m.data.messageTitle ? m.data.messageTitle : "CONFIRM";
+            content.body =  '<p>' + m.data.message + '</p>';
+            content.footer = '<p><button onclick="CXview.close(false)" type="button">Cancel</button> <button onclick="CXview.close(true)" type="button">OK</button></p>';
         }
         return content;
     },
