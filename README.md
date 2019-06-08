@@ -81,6 +81,7 @@ You need this to control the title for the message in a "two-step"-modal.
     }
 
 To set your own defaults use javascript last in your body-tag like this:
+
     <script>
         CXcontrol.options = {
             draggable: "false",
