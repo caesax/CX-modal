@@ -1,5 +1,5 @@
 # CX-modal
-A simple but flexible modal/lightbox that easily can be set to be both draggable, modal and with or without overlay.
+A small but flexible modal/lightbox that easily can be set to be both draggable, modal and with or without overlay.
 
 
 ## Installation
@@ -34,5 +34,41 @@ And/or put some options in a script-tag:
     </script>
     
     
+## Datasets
+**cxmodal**\
+`<a data-cxmodal href="content for the modal here">Click Me</a>`\
+`<a data-cxmodal="content for the modal here" href="#">Click Me</a>`\
+The model tries to find the right type _(image, ajax, message, iframe)_ based on the content . If the content is not set directly it will look in the elements href-attribute and then in the src-attribute.
 
+**cxmodal-image, cxmodal-ajax, cxmodal-iframe**\
+Use this to be sure to set the right datatype.
+`<a data-cxmodal-ajax href="help.html">Click Me</a>`\
+`<a data-cxmodal-image="myPicture.jpg" href="#">Click Me</a>`\
+
+**cxmodal-alert, cxmodal-confirm**\
+`<a data-cxmodal-alert="More detailed info here..." href="#">Info</a>`\
+These can also be combined with other dataset-types to create "two-step"-modals.\
+`<a data-cxmodal-confirm="Are you sure you want to edit this?" data-cxmodal-ajax="edit.php">Edit</a>`\
+
+**cxmodal-draggable**\
+`<img data-cxmodal data-cxmodal-draggable="true" src="image.png" alt="Beautiful Fish">`\
+Set if the modal-window should be draggable or not.
+
+**cxmodal-background**\
+`<a data-cxmodal-alert="Do not forget this!" data-cxmodal-background="block" href="#">Remember</a>`\
+Sets how the modal-overlay (background) is handled. Nothing happens if you click the background when set to _block_ and with _close_ the modal closes. To fully interact with the background set the cxmodal-bakground to _none_.
+
+**cxmodal-title**\
+`<a data-cxmodal-ajax data-cxmodal-title="EDIT" href="edit.php?e=12">Edit</a>`\
+Sets the title of the content and is shown in the modal-windows header (top). It can also be set to "_none_", "_title_" or "_alt_" to find the text in the title- or the alt-attribute.
+
+**cxmodal-description**\
+`<a data-cxmodal-image data-cxmodal-description="alt" href="largefish.jpg"><img src="smallfish.jpg" alt="Red Snapper"></a>`\
+Sets the description of the content and is shown in the modal-windows footer (bottom). It can also be set to "_none_", "_title_" or "_alt_" to find the text in the title- or the alt-attribute.
+
+**cxmodal-alert-title, cxmodal-confirm-title**\
+`<a data-cxmodal-alert="Take a big breath..." data-cxmodal-alert-title="Prepare yourself!" href="http://scarypage.com">Scary Page</a>`\
+You need this to control the title for the message in a "two-step"-modal.
+
+## Defaults
     

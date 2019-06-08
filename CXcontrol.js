@@ -26,7 +26,7 @@ CXcontrol = {
      */
     init: function() {
 
-        var elems = document.querySelectorAll("[data-cxmodal-alert], [data-cxmodal-confirm], [data-cxmodal-iframe], [data-cxmodal]");
+        var elems = document.querySelectorAll("[data-cxmodal-alert], [data-cxmodal-confirm], [data-cxmodal-iframe], [data-cxmodal-ajax], [data-cxmodal]");
         var i;
         for (i = 0; i < elems.length; i++) {           
             var modal = new CXmodel(elems[i]);
