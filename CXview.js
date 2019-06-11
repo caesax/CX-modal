@@ -35,19 +35,19 @@ CXview = {
      * @return  {null}
      */
     init: function(settings) {
-        if (CXview.bgrElem) document.body.removeChild(CXview.bgrElem); // reset
+        if (CXview.bgrElem) document.body.removeChild(CXview.bgrElem); // reset modal
         var newElem = document.createElement("div");
         newElem.innerHTML = CXview.TEMPLATE;
         newElem.className = "cxmodal";
         if (settings) {
-                newElem.classList.add("cxmodal_background-" + settings.background);
+                newElem.classList.add("cxmodal--background-" + settings.background);
             if (settings.background == "close") {
                 newElem.addEventListener("click", function() {
                     CXview.close();
                 });
             }
             if (settings.draggable) {
-                newElem.classList.add("cxmodal_draggable");
+                newElem.classList.add("cxmodal--draggable");
                 var winHeader = newElem.querySelector(".cxmodal__header");
                 winHeader.addEventListener("mousedown", function (e) {
                     CXview.dragStart(e);
@@ -78,7 +78,7 @@ CXview = {
     open: function(content, settings, modal){
         CXview.modal = modal;
         CXview.init(settings);
-        CXview.elem.classList.add("cxmodal_" + content.type);
+        CXview.elem.classList.add("cxmodal--" + content.type);
         document.querySelector(".cxmodal__header").innerHTML = content.header;
         document.querySelector(".cxmodal__body").innerHTML = content.body;
         if (content.footer) {

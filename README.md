@@ -88,3 +88,15 @@ To set your own defaults use javascript last in your body-tag like this:
             background: "block"
         }
     </script>
+
+## Design
+All styling is done with modular CSS (_BEM – Block Element Modifier_) and should be fairly easy to tweek and design further.
+Here is the HTML-structure:
+    <div class="cxmodal">
+        <div class="cxmodal__window cxmodal--modifiers">
+            <div class="cxmodal__header"></div>
+            <span class="cxmodal__close">&times;</span>
+            <div class="cxmodal__body"></div>
+            <div class="cxmodal__footer"></div>
+        </div>
+    </div>

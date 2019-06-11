@@ -7,7 +7,7 @@ CXmodel = function(elem) {
     /**
      * "Event-elementet" som ligger till grund för datamodellen
      */
-    this.targetElem = elem;
+    this.targetElem = elem || null;
 
     /**
      * Själva data-innehållet
@@ -44,11 +44,9 @@ CXmodel.prototype = {
         if (this.targetElem) {
             
             var dataset = this.targetElem.dataset;
-            var localSettings = Object.assign(this.settings, CXcontrol.settings);
-            console.log(localSettings);  // TODO: ta bort console.log-test
-            if (dataset.cxmodalBackground) localSettings.background = dataset.cxmodalBackground;
-            if (dataset.cxmodalDraggable) localSettings.draggable = dataset.cxmodalDraggable;
-            this.settings = localSettings;
+            this.settings = Object.create(CXcontrol.defaults);
+            if (dataset.cxmodalBackground) this.settings.background = dataset.cxmodalBackground;
+            if (dataset.cxmodalDraggable) this.settings.draggable = dataset.cxmodalDraggable;
             console.log(this.settings);  // TODO: ta bort console.log-test
             console.log(dataset);  // TODO: ta bort console.log-test
 
@@ -72,37 +70,40 @@ CXmodel.prototype = {
             this.data.href = this.targetElem.getAttribute("src");
         }
         if (dataset.cxmodal > "") this.data.href = dataset.cxmodal;
-        if (typeof dataset.cxmodalAjax !== "undefined") {
+
+        if (dataset.cxmodalAjax !== undefined) {
             this.data.href = dataset.cxmodalAjax ? dataset.cxmodalAjax: this.data.href;
             this.data.type = "ajax";
         }
-        if (typeof dataset.cxmodalIframe !== "undefined") {
+        else if (dataset.cxmodalIframe !== undefined) {
             this.data.href = dataset.cxmodalIframe ? dataset.cxmodalIframe: this.data.href;
             this.data.type = "iframe";
         }
-        if (typeof dataset.cxmodalImage !== "undefined") {
+        else if (dataset.cxmodalImage !== undefined) {
             this.data.href = dataset.cxmodalImage ? dataset.cxmodalImage: this.data.href;
             this.data.type = "image";
         }
-        if (typeof dataset.cxmodalConfirm !== "undefined") {
+
+        if (dataset.cxmodalConfirm !== undefined) {
             this.data.message = dataset.cxmodalConfirm ? dataset.cxmodalConfirm: this.data.href;
             this.data.messageType = "confirm";
             if (dataset.cxmodalConfirmTitle) {
                 this.data.messageTitle = dataset.cxmodalConfirmTitle;
             }
         }
-        if (typeof dataset.cxmodalAlert !== "undefined") {
+        else if (dataset.cxmodalAlert !== undefined) {
             this.data.message = dataset.cxmodalAlert ? dataset.cxmodalAlert: this.data.href;
             this.data.messageType = "alert";
             if (dataset.cxmodalAlertTitle) {
                 this.data.messageTitle = dataset.cxmodalMessageTitle;
             }
         }
-        if (typeof dataset.cxmodalTitle !== "undefined") {
+        
+        if (dataset.cxmodalTitle !== undefined) {
             this.data.title = dataset.cxmodalTitle ? dataset.cxmodalTitle: this.targetElem.getAttribute("title");
             if (!this.data.title && this.targetElem.querySelector("[title]")) this.data.title = this.targetElem.querySelector("[title]").getAttribute("title");
         }
-        if (typeof dataset.cxmodalDescription !== "undefined") {
+        if (dataset.cxmodalDescription !== undefined) {
             this.data.description = dataset.cxmodalDescription ? dataset.cxmodalDescription: this.targetElem.getAttribute("alt");
             if (!this.data.description && this.targetElem.querySelector("[alt]")) this.data.description = this.targetElem.querySelector("[alt]").getAttribute("alt");
         }

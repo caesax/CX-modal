@@ -7,7 +7,7 @@ CXcontrol = {
     /**
      * Default settings
      */
-    settings: {
+    defaults: {
         background: "close",     // close | block | none
         draggable: true,         // true | false
         alertOverride: true,     // true | false
@@ -36,15 +36,15 @@ CXcontrol = {
             }
         }
 
-        if (CXcontrol.options) CXcontrol.settings = Object.assign(CXcontrol.settings, CXcontrol.options);
+        if (CXcontrol.options) CXcontrol.defaults = Object.assign(CXcontrol.defaults, CXcontrol.options);
         // Skriver över alert-funktionen
-        if (CXcontrol.settings.alertOverride) {
+        if (CXcontrol.defaults.alertOverride) {
             window.alert = function (x) {
                 CXcontrol.open(x, "alert");
             };
         }
         // Skriver över confirm-funktionen
-        if (CXcontrol.settings.confirmOverride) {
+        if (CXcontrol.defaults.confirmOverride) {
             window.confirm = function (x) {
                 CXcontrol.open(x, "confirm");
             };
@@ -83,7 +83,7 @@ CXcontrol = {
     open: function(evt, type) {
         var content = {}, settings = {};
         if (type) {  // If alert or confirm from override (no event)
-            settings = CXcontrol.settings;
+            settings = CXcontrol.defaults;
             CXview.init(settings);
             content.header = type.toUpperCase();
             content.body = evt;
@@ -132,7 +132,7 @@ CXcontrol = {
         content.type = m.data.type;
         if (m.data.type == 'image') {
             content.header = m.data.title;
-            content.body = '<img src="' + m.data.href + '" alt="' + m.data.description + '">';
+            content.body = '<img class="cxmodal__body-img" src="' + m.data.href + '" alt="' + m.data.description + '">';
             content.footer = m.data.description;
         }
         if (m.data.type == 'ajax') {
@@ -148,13 +148,13 @@ CXcontrol = {
             content.type = 'alert';
             content.header = m.data.messageTitle ? m.data.messageTitle : "ALERT";
             content.body =  '<p>' + m.data.message + '</p>';
-            content.footer = '<p><button onclick="CXview.close(true)" type="button">OK</button></p>';
+            content.footer = '<button class="cxmodal__footer-button" onclick="CXview.close(true)" type="button">OK</button>';
         }
         if (m.data.messageType == 'confirm') {
             content.type = 'confirm';
             content.header = m.data.messageTitle ? m.data.messageTitle : "CONFIRM";
             content.body =  '<p>' + m.data.message + '</p>';
-            content.footer = '<p><button onclick="CXview.close(false)" type="button">Cancel</button> <button onclick="CXview.close(true)" type="button">OK</button></p>';
+            content.footer = '<button class="cxmodal__footer-button" onclick="CXview.close(false)" type="button">Cancel</button><button class="cxmodal__footer-button" onclick="CXview.close(true)" type="button">OK</button>';
         }
         return content;
     },
