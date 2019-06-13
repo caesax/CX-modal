@@ -120,14 +120,31 @@ CXmodel.prototype = {
      */
     guessType: function() {
 
-            this.data.type="message";
-            var ext = this.data.href.split('.').pop();
-            ext = ext.split('?')[0].toLowerCase();
-            var tryExt = ['jpg', 'jpeg', 'gif', 'png'];
-            if (tryExt.includes(ext)) this.data.type = 'image';
-            tryExt = ['php', 'htm', 'html', 'txt'];
-            if (tryExt.includes(ext)) this.data.type = 'ajax';
-            if (this.data.href.substr(0, 4) == 'http') this.data.type = 'link';
+            var ext = getFileExtension(this.data.href);
+            var type = "message";
+            if (tryIfImage(ext)) {
+                type = 'image';
+            } else if (tryIfAjax(ext)) {
+                type = 'ajax';
+            } else if (this.data.href.substr(0, 4) == 'http') {
+                type = 'link';
+            }
+            this.data.type = type;
+
+            function getFileExtension(href) {
+                var ext = href.split('.').pop();
+                return ext.split('?')[0].toLowerCase();
+            }
+
+            function tryIfImage(ext) {
+                var array = ['jpg', 'jpeg', 'gif', 'png'];
+                return array.includes(ext);
+            }
+
+            function tryIfAjax(ext) {
+                var array = ['php', 'htm', 'html', 'txt'];
+                return array.includes(ext);
+            }
 
     }
 

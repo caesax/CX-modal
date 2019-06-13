@@ -80,7 +80,7 @@ You need this to control the title for the message in a "two-step"-modal.
         confirmTitle: "CONFIRM"         // * | none
     }
 
-To set your own defaults use javascript last in your body-tag like this:
+To set your own defaults use javascript at the end of your body-tag like this:
 
     <script>
         CXcontrol.options = {
@@ -90,8 +90,9 @@ To set your own defaults use javascript last in your body-tag like this:
     </script>
 
 ## Design
-All styling is done with modular CSS (_BEM – Block Element Modifier_) and should be fairly easy to tweek and design further.
-Here is the HTML-structure:
+All styling is done with modular CSS (_BEM – Block Element Modifier_) and should be fairly easy to tweek and design further. Download the unminified version of the CSS (or SCSS) for easier understanding of how to overwrite the rules or even make a completely new design or template.
+Here is the HTML-structure of the modal:
+
     <div class="cxmodal">
         <div class="cxmodal__window cxmodal--modifiers">
             <div class="cxmodal__header"></div>
