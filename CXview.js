@@ -1,11 +1,15 @@
 //--------------------------------------------------------------------------
-// Klassen CXview - som sköter renderingen av modalen
+// CXview
 //--------------------------------------------------------------------------
-
+/**
+ * The View-class
+ *
+ * @class
+ */
 CXview = {
 
     /**
-     * HTML-mall för modal-fönstret
+     * HTML-template for the modal window
      */
     TEMPLATE: '\
         <div class="cxmodal__window">\
@@ -14,25 +18,23 @@ CXview = {
             <div class="cxmodal__body"></div>\
         </div>',
 
-    /* Referens till modalfönstret */
+    /* Reference to the window element */
     elem: null,
 
-    /* Referens till aktuellt data-objekt */
+    /* Reference to the data-model object */
     modal: null,
 
-    /* Referens till modalens overlay (bakgrund) */
+    /* Reference to the overlay element (modal background) */
     bgrElem: null,
 
-    /* Offset-värden för fönstret som används vid drag */
+    /* Offset-values for the window when drag'n'drop */
     offsetX: 0,
     offsetY: 0,
 
     /**
-     * [init description]
+     * Renders the modal structure with the right settings and adds eventlisteners
      *
      * @param   {object}  settings
-     *
-     * @return  {null}
      */
     init: function(settings) {
         if (CXview.bgrElem) document.body.removeChild(CXview.bgrElem); // reset modal
@@ -73,7 +75,7 @@ CXview = {
     },
 
     /**
-     * 
+     * Render the content with its settings and show the modal window
      */
     open: function(content, settings, modal){
         CXview.modal = modal;
@@ -92,9 +94,7 @@ CXview = {
     },
 
     /**
-     * [close description]
-     *
-     * @return  {[type]}  [return description]
+     * Close (hide) the modal window, or open it again with the "next" content
      */
     close: function(ok) {
         CXview.bgrElem.style.display = "none";
@@ -105,9 +105,7 @@ CXview = {
     },
 
     /**
-     * [dragStart description]
-     *
-     * @return  {[type]}  [return description]
+     * Start drag'n'drop and set the offset values
      */
     dragStart: function (event) {
         CXview.elem.style.opacity = 0.95;
@@ -119,7 +117,7 @@ CXview = {
     },
 
     /**
-     * ...
+     * Listen for the mouse event to drag the window
      * 
      * @param {MouseEvent} event 
      */
@@ -129,9 +127,7 @@ CXview = {
     },
 
     /**
-     * [dragStop description]
-     *
-     * @return  {[type]}  [return description]
+     * Stop drag and remove its event listeners
      */
     dragStop: function () {
         CXview.elem.style.opacity = 1;

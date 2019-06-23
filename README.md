@@ -3,7 +3,7 @@ A small but flexible modal/lightbox that easily can be set to be both draggable,
 
 
 ## Installation
-All styling is done with CSS so you have to include both the CSS- and JavaScript.\
+You have to include both the CSS- and JavaScript-file.\
 Download _**cxmodal.min.js**_ and _**cxmodal.min.css**_ and put them in your `<head>` tag like this:
 
     <link rel="stylesheet" href="cxmodal/cxmodal.min.css">
@@ -91,6 +91,7 @@ To set your own defaults use javascript at the end of your body-tag like this:
 
 ## Design
 All styling is done with modular CSS (_BEM – Block Element Modifier_) and should be fairly easy to tweek and design further. Download the unminified version of the CSS (or SCSS) for easier understanding of how to overwrite the rules or even make a completely new design or template.
+
 Here is the HTML-structure of the modal:
 
     <div class="cxmodal">

@@ -1,16 +1,20 @@
 //--------------------------------------------------------------------------
-// Datamodellklassen CXmodel
+// CXmodel
 //--------------------------------------------------------------------------
-
+/**
+ * The Model-class
+ *
+ * @class
+ */
 CXmodel = function(elem) {
 
     /**
-     * "Event-elementet" som ligger till grund för datamodellen
+     * A reference to the event-element
      */
     this.targetElem = elem || null;
 
     /**
-     * Själva data-innehållet
+     * Data for this model
      */
     this.data = {
         type: "",
@@ -23,21 +27,19 @@ CXmodel = function(elem) {
     };
 
     /**
-     * Inställningarna för varje enskilt objekt (modal)
+     * Settings for this model
      */
     this.settings = {};
 
 }
 
-// Prototypen
+// The prototype
 CXmodel.prototype = {
 
     constructor: CXmodel,
 
     /**
-     * Objektet initieras
-     *
-     * @return  {[type]}  [return description]
+     * Get and update settings based on datasets from targetElem
      */
     init: function() {
         
@@ -57,9 +59,7 @@ CXmodel.prototype = {
     },
 
     /**
-     * [getData description]
-     *
-     * @return  {null}
+     * Get and update the data based on datasets and attributes from targetElem
      */
     getData: function() {  // TODO: Förbättra och generalisera denna kod
 
@@ -114,9 +114,7 @@ CXmodel.prototype = {
 
     
     /**
-     * Hämtar data-typ baserat på värdet för data.href
-     *
-     * @return  {[type]}  [return description]
+     * Try to figure out data.type based on data.href
      */
     guessType: function() {
 
@@ -131,16 +129,37 @@ CXmodel.prototype = {
             }
             this.data.type = type;
 
+            /**
+             * Get the file extension from data.href
+             *
+             * @param   {string}  href  data.href
+             *
+             * @return  {string}        The file extension
+             */
             function getFileExtension(href) {
                 var ext = href.split('.').pop();
                 return ext.split('?')[0].toLowerCase();
             }
 
+            /**
+             * Try if data.type should be image
+             *
+             * @param   {string}  ext  File extension
+             *
+             * @return  {boolean}       If extension is Image
+             */
             function tryIfImage(ext) {
                 var array = ['jpg', 'jpeg', 'gif', 'png'];
                 return array.includes(ext);
             }
 
+            /**
+             * Try if data.type should be ajax
+             *
+             * @param   {string}  ext  File extension
+             *
+             * @return  {boolean}       If extension suggests Ajax
+             */
             function tryIfAjax(ext) {
                 var array = ['php', 'htm', 'html', 'txt'];
                 return array.includes(ext);

@@ -1,7 +1,11 @@
 //--------------------------------------------------------------------------
-// Kontrollklassen CXcontrol
+// CXcontrol
 //--------------------------------------------------------------------------
-
+/**
+ * The Control-class
+ *
+ * @class
+ */
 CXcontrol = {
 
     /**
@@ -15,14 +19,12 @@ CXcontrol = {
     },
 
     /**
-     * Add or change settings externally
+     * This property is used to change settings externally
      */
     options: {},  
 
     /**
-     * Initierar alla modal-objekt på sidan
-     *
-     * @return  {null}
+     * Create all model-objects (CXmodel) based on every element with a proper dataset (data-cxmodal)
      */
     init: function() {
 
@@ -37,13 +39,15 @@ CXcontrol = {
         }
 
         if (CXcontrol.options) CXcontrol.defaults = Object.assign(CXcontrol.defaults, CXcontrol.options);
-        // Skriver över alert-funktionen
+
+        // Override the default alert function
         if (CXcontrol.defaults.alertOverride) {
             window.alert = function (x) {
                 CXcontrol.open(x, "alert");
             };
         }
-        // Skriver över confirm-funktionen
+
+        // Override the default confirm function
         if (CXcontrol.defaults.confirmOverride) {
             window.confirm = function (x) {
                 CXcontrol.open(x, "confirm");
@@ -52,11 +56,11 @@ CXcontrol = {
     },
 
     /**
-     * [ajax description]
+     * Get and set the main content based on AJAX call
      *
-     * @param   {[type]}  url  [url description]
+     * @param   {string}  url  
      *
-     * @return  {[type]}       [return description]
+     * @return  {null}
      */
     ajax: function(url) {  // TODO Förbättra ajax-funktionen
         var xhr;
@@ -74,11 +78,12 @@ CXcontrol = {
     },
 
     /**
-     * [open description]
+     * Calls CXview.open() with the right content and settings
      *
-     * @param   {[type]}  evt  [evt description]
+     * @param   {event}  evt   
+     * @param   {string}  type  
      *
-     * @return  {[type]}       [return description]
+     * @return  {null}       
      */
     open: function(evt, type) {
         var content = {}, settings = {};
@@ -121,11 +126,11 @@ CXcontrol = {
     },
 
     /**
-     * Hämtar innehållet i modalen
+     * Set the HTML-content based on the models data
      *
-     * @param   {object}  m  [m description]
+     * @param   {object}  m  model
      *
-     * @return  {object}     [return description]
+     * @return  {object}     content
      */
     getContent: function(m) {
         var content = {};
@@ -135,11 +140,11 @@ CXcontrol = {
             content.body = '<img class="cxmodal__body-img" src="' + m.data.href + '" alt="' + m.data.description + '">';
             content.footer = m.data.description;
         }
-        if (m.data.type == 'ajax') {
+        else if (m.data.type == 'ajax') {
             content.body = CXcontrol.ajax(m.data.href);
             content.header = m.data.title ? m.data.title : "AJAX";
         }
-        if (m.data.type == 'iframe') {
+        else if (m.data.type == 'iframe') {
             content.body = '<iframe src="' + m.data.href + '"></iframe>';
             content.header = m.data.title ? m.data.title : "IFRAME";
             content.footer = m.data.description;
@@ -150,7 +155,7 @@ CXcontrol = {
             content.body =  '<p>' + m.data.message + '</p>';
             content.footer = '<button class="cxmodal__footer-button" onclick="CXview.close(true)" type="button">OK</button>';
         }
-        if (m.data.messageType == 'confirm') {
+        else if (m.data.messageType == 'confirm') {
             content.type = 'confirm';
             content.header = m.data.messageTitle ? m.data.messageTitle : "CONFIRM";
             content.body =  '<p>' + m.data.message + '</p>';
