@@ -46,11 +46,11 @@ CXmodel.prototype = {
         if (this.targetElem) {
             
             var dataset = this.targetElem.dataset;
-            this.settings = Object.create(CXcontrol.defaults);
+            this.settings = Object.assign({}, CXcontrol.defaults);
             if (dataset.cxmodalBackground) this.settings.background = dataset.cxmodalBackground;
-            if (dataset.cxmodalDraggable) this.settings.draggable = dataset.cxmodalDraggable;
-            console.log(this.settings);  // TODO: ta bort console.log-test
-            console.log(dataset);  // TODO: ta bort console.log-test
+            if (dataset.cxmodalDraggable !== undefined) {
+                this.settings.draggable = CXmodel.parseBoolean(dataset.cxmodalDraggable, CXcontrol.defaults.draggable);
+            }
 
             this.getData();
 
@@ -61,7 +61,7 @@ CXmodel.prototype = {
     /**
      * Get and update the data based on datasets and attributes from targetElem
      */
-    getData: function() {  // TODO: Förbättra och generalisera denna kod
+    getData: function() {
 
         var dataset = this.targetElem.dataset;
 
@@ -95,21 +95,51 @@ CXmodel.prototype = {
             this.data.message = dataset.cxmodalAlert ? dataset.cxmodalAlert: this.data.href;
             this.data.messageType = "alert";
             if (dataset.cxmodalAlertTitle) {
-                this.data.messageTitle = dataset.cxmodalMessageTitle;
+                this.data.messageTitle = dataset.cxmodalAlertTitle;
             }
         }
         
-        if (dataset.cxmodalTitle !== undefined) {
-            this.data.title = dataset.cxmodalTitle ? dataset.cxmodalTitle: this.targetElem.getAttribute("title");
-            if (!this.data.title && this.targetElem.querySelector("[title]")) this.data.title = this.targetElem.querySelector("[title]").getAttribute("title");
-        }
-        if (dataset.cxmodalDescription !== undefined) {
-            this.data.description = dataset.cxmodalDescription ? dataset.cxmodalDescription: this.targetElem.getAttribute("alt");
-            if (!this.data.description && this.targetElem.querySelector("[alt]")) this.data.description = this.targetElem.querySelector("[alt]").getAttribute("alt");
-        }
+        this.data.title = this.resolveMeta(dataset.cxmodalTitle, CXcontrol.defaults.defaultTitle, "title");
+        this.data.description = this.resolveMeta(dataset.cxmodalDescription, CXcontrol.defaults.defaultDescription, "alt");
 
         if (!this.data.type) this.guessType();
 
+    },
+
+    /**
+     * Resolve title/description from dataset value, default mode, or element attributes
+     *
+     * @param   {string|undefined}  value        Dataset value
+     * @param   {string}            defaultMode  Default mode (title | alt | none)
+     * @param   {string}            attrName     Attribute to read as fallback
+     *
+     * @return  {string}
+     */
+    resolveMeta: function(value, defaultMode, attrName) {
+        var mode = value !== undefined ? value : defaultMode;
+        if (mode === undefined || mode === null || mode === "none") return "";
+        if (mode === "title" || mode === "alt") {
+            return this.readAttr(mode);
+        }
+        if (value !== undefined && value !== "") {
+            return value;
+        }
+        return this.readAttr(attrName) || this.readAttr(defaultMode === "alt" ? "alt" : "title");
+    },
+
+    /**
+     * Read title/alt from the trigger or a nested element
+     *
+     * @param   {string}  attrName
+     *
+     * @return  {string}
+     */
+    readAttr: function(attrName) {
+        if (!attrName || attrName === "none") return "";
+        var value = this.targetElem.getAttribute(attrName);
+        if (value) return value;
+        var nested = this.targetElem.querySelector("[" + attrName + "]");
+        return nested ? nested.getAttribute(attrName) : "";
     },
 
     
@@ -118,14 +148,15 @@ CXmodel.prototype = {
      */
     guessType: function() {
 
-            var ext = getFileExtension(this.data.href);
+            var href = this.data.href || "";
+            var ext = getFileExtension(href);
             var type = "message";
             if (tryIfImage(ext)) {
                 type = 'image';
             } else if (tryIfAjax(ext)) {
                 type = 'ajax';
-            } else if (this.data.href.substr(0, 4) == 'http') {
-                type = 'link';
+            } else if (/^https?:\/\//i.test(href)) {
+                type = 'iframe';
             }
             this.data.type = type;
 
@@ -137,8 +168,10 @@ CXmodel.prototype = {
              * @return  {string}        The file extension
              */
             function getFileExtension(href) {
-                var ext = href.split('.').pop();
-                return ext.split('?')[0].toLowerCase();
+                var path = href.split('?')[0].split('#')[0];
+                var parts = path.split('.');
+                if (parts.length < 2) return "";
+                return parts.pop().toLowerCase();
             }
 
             /**
@@ -149,7 +182,7 @@ CXmodel.prototype = {
              * @return  {boolean}       If extension is Image
              */
             function tryIfImage(ext) {
-                var array = ['jpg', 'jpeg', 'gif', 'png'];
+                var array = ['jpg', 'jpeg', 'gif', 'png', 'webp', 'svg', 'avif'];
                 return array.includes(ext);
             }
 
@@ -167,4 +200,21 @@ CXmodel.prototype = {
 
     }
 
+}
+
+/**
+ * Parse a dataset boolean string
+ *
+ * @param   {string|boolean}  value
+ * @param   {boolean}         fallback
+ *
+ * @return  {boolean}
+ */
+CXmodel.parseBoolean = function(value, fallback) {
+    if (typeof value === "boolean") return value;
+    if (value === undefined || value === null || value === "") return !!fallback;
+    var normalized = String(value).toLowerCase();
+    if (normalized === "true" || normalized === "1") return true;
+    if (normalized === "false" || normalized === "0") return false;
+    return !!fallback;
 }
