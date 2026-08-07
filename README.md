@@ -3,11 +3,11 @@ A small but flexible modal/lightbox that easily can be set to be both draggable,
 
 
 ## Installation
-You have to include both the CSS- and JavaScript-file.\
-Download _**cxmodal.min.js**_ and _**cxmodal.min.css**_ and put them in your `<head>` tag like this:
+You have to include both the CSS- and JavaScript-file.  
+Download _**cxmodal.min.js**_ and _**cxmodal.min.css**_ from the `release/` folder and include them like this:
 
-    <link rel="stylesheet" href="cxmodal/cxmodal.min.css">
-    <script src="cxmodal/cxmodal.min.js"></script>`
+    <link rel="stylesheet" href="release/cxmodal.min.css">
+    <script src="release/cxmodal.min.js"></script>
 
 
 ## Usage
@@ -20,84 +20,98 @@ By default, cxmodal acts on all elements using the 'data-cxmodal' attribute. An 
 ## Configuration
 Every modal-window can be easily customized both individually and generally with either attributes or simple javascript. The modal can have both a **title** (window-header) and a **description** (window-footer). It can also be draggable or not and the ability to interact with the background can be toggled on and off.
 
-    <a data-cxmodal-alert="This text will show up in the a custom alert-window" data-cxmodal-titel="Important">...</a>
+    <a data-cxmodal-alert="This text will show up in the a custom alert-window" data-cxmodal-title="Important">...</a>
     <img data-cxmodal data-cxmodal-description src="image/painting.jpg" alt="description goes here">
     <a data-cxmodal href="help.html" data-cxmodal-draggable="false">Help</a>
     
-And/or put some options in a script-tag:
+And/or set options **after** the library script is included, but **before** the `window` `load` event (when `CXcontrol.init` runs):
 
+    <script src="cxmodal/cxmodal.min.js"></script>
     <script>
         CXcontrol.options = {
-            draggable: "true",
-            background: "block"
+            draggable: false,
+            background: "block",
+            alertOverride: false,
+            confirmOverride: false
         }
     </script>
+
+To bind triggers added to the DOM later, call `CXcontrol.init()` or `CXcontrol.bindTriggers(container)` again (existing triggers are not double-bound).
     
     
 ## Datasets
-**cxmodal**\
-`<a data-cxmodal href="content for the modal here">Click Me</a>`\
-`<a data-cxmodal="content for the modal here" href="#">Click Me</a>`\
-The model tries to find the right type _(image, ajax, message, iframe)_ based on the content . If the content is not set directly it will look in the elements href-attribute and then in the src-attribute.
+**cxmodal**  
+`<a data-cxmodal href="content for the modal here">Click Me</a>`  
+`<a data-cxmodal="content for the modal here" href="#">Click Me</a>`  
+The model tries to find the right type _(image, ajax, message, iframe)_ based on the content. If the content is not set directly it will look in the elements href-attribute and then in the src-attribute.
 
-**cxmodal-image, cxmodal-ajax, cxmodal-iframe**\
-Use this to be sure to set the right datatype.\
-`<a data-cxmodal-ajax href="help.html">Click Me</a>`\
-`<a data-cxmodal-image="myPicture.jpg" href="#">Click Me</a>`\
+**cxmodal-image, cxmodal-ajax, cxmodal-iframe**  
+Use this to be sure to set the right datatype.  
+`<a data-cxmodal-ajax href="help.html">Click Me</a>`  
+`<a data-cxmodal-image="myPicture.jpg" href="#">Click Me</a>`  
 
-**cxmodal-alert, cxmodal-confirm**\
-`<a data-cxmodal-alert="More detailed info here..." href="#">Info</a>`\
-These can also be combined with other dataset-types to create "two-step"-modals.\
-`<a data-cxmodal-confirm="Are you sure you want to edit this?" data-cxmodal-ajax="edit.php">Edit</a>`\
+**cxmodal-alert, cxmodal-confirm**  
+`<a data-cxmodal-alert="More detailed info here..." href="#">Info</a>`  
+These can also be combined with other dataset-types to create "two-step"-modals.  
+`<a data-cxmodal-confirm="Are you sure you want to edit this?" data-cxmodal-ajax="edit.php">Edit</a>`  
 
-**cxmodal-draggable**\
-`<img data-cxmodal data-cxmodal-draggable="true" src="image.png" alt="Beautiful Fish">`\
-Set if the modal-window should be draggable or not.
+**cxmodal-draggable**  
+`<img data-cxmodal data-cxmodal-draggable="true" src="image.png" alt="Beautiful Fish">`  
+Set if the modal-window should be draggable or not (`true` / `false`).
 
-**cxmodal-background**\
-`<a data-cxmodal-alert="Do not forget this!" data-cxmodal-background="block" href="#">Remember</a>`\
-Sets how the modal-overlay (background) is handled. Nothing happens if you click the background when set to _block_ and with _close_ the modal closes. To fully interact with the background set the cxmodal-bakground to _none_.
+**cxmodal-background**  
+`<a data-cxmodal-alert="Do not forget this!" data-cxmodal-background="block" href="#">Remember</a>`  
+Sets how the modal-overlay (background) is handled. Nothing happens if you click the background when set to _block_ and with _close_ the modal closes. To fully interact with the background set the cxmodal-background to _none_.
 
-**cxmodal-title**\
-`<a data-cxmodal-ajax data-cxmodal-title="EDIT" href="edit.php?e=12">Edit</a>`\
+**cxmodal-title**  
+`<a data-cxmodal-ajax data-cxmodal-title="EDIT" href="edit.php?e=12">Edit</a>`  
 Sets the title of the content and is shown in the modal-windows header (top). It can also be set to "_none_", "_title_" or "_alt_" to find the text in the title- or the alt-attribute.
 
-**cxmodal-description**\
-`<a data-cxmodal-image data-cxmodal-description="alt" href="largefish.jpg"><img src="smallfish.jpg" alt="Red Snapper"></a>`\
+**cxmodal-description**  
+`<a data-cxmodal-image data-cxmodal-description="alt" href="largefish.jpg"><img src="smallfish.jpg" alt="Red Snapper"></a>`  
 Sets the description of the content and is shown in the modal-windows footer (bottom). It can also be set to "_none_", "_title_" or "_alt_" to find the text in the title- or the alt-attribute.
 
-**cxmodal-alert-title, cxmodal-confirm-title**\
-`<a data-cxmodal-alert="Take a big breath..." data-cxmodal-alert-title="Prepare yourself!" href="http://scarypage.com">Scary Page</a>`\
+**cxmodal-alert-title, cxmodal-confirm-title**  
+`<a data-cxmodal-alert="Take a big breath..." data-cxmodal-alert-title="Prepare yourself!" href="http://scarypage.com">Scary Page</a>`  
 You need this to control the title for the message in a "two-step"-modal.
 
 ## Defaults
     defaults = {
-        draggable: "true",              // true | false
+        draggable: true,                // true | false
         background: "close",            // block | close | none
         defaultTitle: "title",          // title | alt | none
         defaultDescription: "alt",      // title | alt | none
         alertTitle: "ALERT",            // * | none
-        confirmTitle: "CONFIRM"         // * | none
+        confirmTitle: "CONFIRM",        // * | none
+        alertOverride: false,           // true | false
+        confirmOverride: false          // true | false
     }
 
-To set your own defaults use javascript at the end of your body-tag like this:
+To set your own defaults use javascript like this:
 
     <script>
         CXcontrol.options = {
-            draggable: "false",
+            draggable: false,
             background: "block"
         }
     </script>
 
+**Note:** `alertOverride` / `confirmOverride` replace `window.alert` / `window.confirm` with the modal UI. They are **off by default** because native `confirm()` is synchronous and returns a boolean; the modal cannot preserve that contract. If you enable `confirmOverride`, treat it as fire-and-forget (the function returns `false`).
+
+**Security notes:**
+- Image, iframe, and AJAX URLs must be `http(s):`, protocol-relative (`//…`), or relative. `javascript:`, `data:`, and other schemes are blocked.
+- AJAX responses are inserted as HTML — only point `data-cxmodal-ajax` at **trusted same-origin** URLs.
+- Iframes get a `sandbox` attribute (`allow-scripts allow-same-origin allow-forms allow-popups`).
+
 ## Design
-All styling is done with modular CSS (_BEM – Block Element Modifier_) and should be fairly easy to tweek and design further. Download the unminified version of the CSS (or SCSS) for easier understanding of how to overwrite the rules or even make a completely new design or template.
+All styling is done with modular CSS (_BEM – Block Element Modifier_) and should be fairly easy to tweak and design further. Download the unminified version of the CSS (or SCSS) for easier understanding of how to overwrite the rules or even make a completely new design or template.
 
 Here is the HTML-structure of the modal:
 
     <div class="cxmodal">
-        <div class="cxmodal__window cxmodal--modifiers">
+        <div class="cxmodal__window cxmodal--modifiers" role="dialog" aria-modal="true" tabindex="-1">
             <div class="cxmodal__header"></div>
-            <span class="cxmodal__close">&times;</span>
+            <button type="button" class="cxmodal__close" aria-label="Close">&times;</button>
             <div class="cxmodal__body"></div>
             <div class="cxmodal__footer"></div>
         </div>
