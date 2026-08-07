@@ -59,11 +59,25 @@ CXmodel.prototype = {
     },
 
     /**
+     * Reset mutable data fields before re-reading attributes
+     */
+    resetData: function() {
+        this.data.type = "";
+        this.data.href = "";
+        this.data.title = "";
+        this.data.description = "";
+        this.data.message = "";
+        this.data.messageType = "";
+        this.data.messageTitle = "";
+    },
+
+    /**
      * Get and update the data based on datasets and attributes from targetElem
      */
     getData: function() {
 
         var dataset = this.targetElem.dataset;
+        this.resetData();
 
         this.data.href = this.targetElem.getAttribute("href");
         if (!this.data.href) {

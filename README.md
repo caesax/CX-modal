@@ -4,10 +4,10 @@ A small but flexible modal/lightbox that easily can be set to be both draggable,
 
 ## Installation
 You have to include both the CSS- and JavaScript-file.  
-Download _**cxmodal.min.js**_ and _**cxmodal.min.css**_ and put them in your `<head>` tag like this:
+Download _**cxmodal.min.js**_ and _**cxmodal.min.css**_ from the `release/` folder and include them like this:
 
-    <link rel="stylesheet" href="cxmodal/cxmodal.min.css">
-    <script src="cxmodal/cxmodal.min.js"></script>
+    <link rel="stylesheet" href="release/cxmodal.min.css">
+    <script src="release/cxmodal.min.js"></script>
 
 
 ## Usage
@@ -24,8 +24,9 @@ Every modal-window can be easily customized both individually and generally with
     <img data-cxmodal data-cxmodal-description src="image/painting.jpg" alt="description goes here">
     <a data-cxmodal href="help.html" data-cxmodal-draggable="false">Help</a>
     
-And/or put some options in a script-tag **before** the library loads, or assign them before `window` `load`:
+And/or set options **after** the library script is included, but **before** the `window` `load` event (when `CXcontrol.init` runs):
 
+    <script src="cxmodal/cxmodal.min.js"></script>
     <script>
         CXcontrol.options = {
             draggable: false,
@@ -34,6 +35,8 @@ And/or put some options in a script-tag **before** the library loads, or assign 
             confirmOverride: false
         }
     </script>
+
+To bind triggers added to the DOM later, call `CXcontrol.init()` or `CXcontrol.bindTriggers(container)` again (existing triggers are not double-bound).
     
     
 ## Datasets
@@ -95,13 +98,18 @@ To set your own defaults use javascript like this:
 
 **Note:** `alertOverride` / `confirmOverride` replace `window.alert` / `window.confirm` with the modal UI. They are **off by default** because native `confirm()` is synchronous and returns a boolean; the modal cannot preserve that contract. If you enable `confirmOverride`, treat it as fire-and-forget (the function returns `false`).
 
+**Security notes:**
+- Image, iframe, and AJAX URLs must be `http(s):`, protocol-relative (`//…`), or relative. `javascript:`, `data:`, and other schemes are blocked.
+- AJAX responses are inserted as HTML — only point `data-cxmodal-ajax` at **trusted same-origin** URLs.
+- Iframes get a `sandbox` attribute (`allow-scripts allow-same-origin allow-forms allow-popups`).
+
 ## Design
 All styling is done with modular CSS (_BEM – Block Element Modifier_) and should be fairly easy to tweak and design further. Download the unminified version of the CSS (or SCSS) for easier understanding of how to overwrite the rules or even make a completely new design or template.
 
 Here is the HTML-structure of the modal:
 
     <div class="cxmodal">
-        <div class="cxmodal__window cxmodal--modifiers" role="dialog" aria-modal="true">
+        <div class="cxmodal__window cxmodal--modifiers" role="dialog" aria-modal="true" tabindex="-1">
             <div class="cxmodal__header"></div>
             <button type="button" class="cxmodal__close" aria-label="Close">&times;</button>
             <div class="cxmodal__body"></div>
