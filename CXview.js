@@ -83,7 +83,16 @@ CXview = {
                 });
             }
         }
-        newElem.querySelector(".cxmodal__window").addEventListener("click", function(event) {
+        var winElem = newElem.querySelector(".cxmodal__window");
+        // Handle OK/Cancel on the window itself — stopPropagation below would
+        // otherwise prevent these clicks from reaching a listener on the overlay.
+        winElem.addEventListener("click", function(event) {
+            var actionEl = event.target.closest
+                ? event.target.closest("[data-cxmodal-action]")
+                : event.target;
+            var action = actionEl && actionEl.getAttribute && actionEl.getAttribute("data-cxmodal-action");
+            if (action === "ok") CXview.close(true);
+            if (action === "cancel") CXview.close(false);
             event.stopPropagation();
         });
         var closeBtn = newElem.querySelector(".cxmodal__close");
@@ -94,17 +103,9 @@ CXview = {
                 CXview.close();
             });
         }
-        newElem.addEventListener("click", function(event) {
-            var actionEl = event.target.closest
-                ? event.target.closest("[data-cxmodal-action]")
-                : event.target;
-            var action = actionEl && actionEl.getAttribute && actionEl.getAttribute("data-cxmodal-action");
-            if (action === "ok") CXview.close(true);
-            if (action === "cancel") CXview.close(false);
-        });
         document.body.appendChild(newElem);
         CXview.bgrElem = newElem;
-        CXview.elem = newElem.querySelector(".cxmodal__window");
+        CXview.elem = winElem;
         CXview.elem.setAttribute("aria-describedby", "cxmodal-desc");
     },
 

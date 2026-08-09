@@ -47,7 +47,7 @@ CXcontrol = {
     /**
      * Selector for modal trigger elements
      */
-    TRIGGER_SELECTOR: "[data-cxmodal-alert], [data-cxmodal-confirm], [data-cxmodal-iframe], [data-cxmodal-ajax], [data-cxmodal]",
+    TRIGGER_SELECTOR: "[data-cxmodal-alert], [data-cxmodal-confirm], [data-cxmodal-iframe], [data-cxmodal-ajax], [data-cxmodal-image], [data-cxmodal]",
 
     /**
      * Create all model-objects (CXmodel) based on every element with a proper dataset (data-cxmodal).
