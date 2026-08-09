@@ -51,6 +51,9 @@ CXmodel.prototype = {
             if (dataset.cxmodalDraggable !== undefined) {
                 this.settings.draggable = CXmodel.parseBoolean(dataset.cxmodalDraggable, CXcontrol.defaults.draggable);
             }
+            if (dataset.cxmodalHideclose !== undefined) {
+                this.settings.hideclose = CXmodel.parseBoolean(dataset.cxmodalHideclose, CXcontrol.defaults.hideclose);
+            }
 
             this.getData();
 

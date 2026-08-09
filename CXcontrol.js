@@ -19,7 +19,8 @@ CXcontrol = {
         alertTitle: "ALERT",           // * | none
         confirmTitle: "CONFIRM",       // * | none
         alertOverride: false,          // true | false — opt-in; native alert is sync
-        confirmOverride: false         // true | false — opt-in; native confirm returns boolean
+        confirmOverride: false,        // true | false — opt-in; native confirm returns boolean
+        hideclose: false               // true | false — hide the close (×) control
     },
 
     /**

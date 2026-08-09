@@ -86,9 +86,14 @@ CXview = {
         newElem.querySelector(".cxmodal__window").addEventListener("click", function(event) {
             event.stopPropagation();
         });
-        newElem.querySelector(".cxmodal__close").addEventListener("click", function() {
-            CXview.close();
-        });
+        var closeBtn = newElem.querySelector(".cxmodal__close");
+        if (settings && settings.hideclose) {
+            closeBtn.style.display = "none";
+        } else {
+            closeBtn.addEventListener("click", function() {
+                CXview.close();
+            });
+        }
         newElem.addEventListener("click", function(event) {
             var actionEl = event.target.closest
                 ? event.target.closest("[data-cxmodal-action]")

@@ -63,6 +63,10 @@ Set if the modal-window should be draggable or not (`true` / `false`).
 `<a data-cxmodal-alert="Do not forget this!" data-cxmodal-background="block" href="#">Remember</a>`  
 Sets how the modal-overlay (background) is handled. Nothing happens if you click the background when set to _block_ and with _close_ the modal closes. To fully interact with the background set the cxmodal-background to _none_.
 
+**cxmodal-hideclose**  
+`<a data-cxmodal-confirm="Continue?" data-cxmodal-hideclose="1" href="next.html">Continue</a>`  
+Hides the close (×) control when set to `true` / `1`.
+
 **cxmodal-title**  
 `<a data-cxmodal-ajax data-cxmodal-title="EDIT" href="edit.php?e=12">Edit</a>`  
 Sets the title of the content and is shown in the modal-windows header (top). It can also be set to "_none_", "_title_" or "_alt_" to find the text in the title- or the alt-attribute.
@@ -84,7 +88,8 @@ You need this to control the title for the message in a "two-step"-modal.
         alertTitle: "ALERT",            // * | none
         confirmTitle: "CONFIRM",        // * | none
         alertOverride: false,           // true | false
-        confirmOverride: false          // true | false
+        confirmOverride: false,         // true | false
+        hideclose: false                // true | false
     }
 
 To set your own defaults use javascript like this:
