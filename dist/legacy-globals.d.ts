@@ -1,0 +1,47 @@
+import { Modal } from "./modal.js";
+import { TriggerModel } from "./types.js";
+import { escapeAttr, escapeHtml, isSafeUrl, sanitizeUrl } from "./url-guard.js";
+export declare function createLegacyGlobals(instance: Modal): {
+    CXmodel: typeof TriggerModel;
+    CXview: {
+        TEMPLATE: string;
+        elem: HTMLElement | null;
+        modal: import("./types.js").TriggerModelLike | null;
+        bgrElem: HTMLElement | null;
+        previousFocus: Element | null;
+        offsetX: number;
+        offsetY: number;
+        FOCUSABLE: string;
+        init(settings?: Parameters<Modal["open"]>[1]): void;
+        open(content: Parameters<Modal["open"]>[0], settings?: Parameters<Modal["open"]>[1], modal?: Parameters<Modal["open"]>[2]): void;
+        close(ok?: boolean): void;
+        lockScroll(): void;
+        unlockScroll(): void;
+        bindKeys(): void;
+        unbindKeys(): void;
+        trapFocus(event: KeyboardEvent): void;
+        dragStart(event: MouseEvent): void;
+        drag(event: MouseEvent): void;
+        dragStop(): void;
+    };
+    CXcontrol: {
+        defaults: import("./types.js").ModalOptions;
+        options: import("./types.js").ModalOptions;
+        _nativeAlert: typeof window.alert | null;
+        _nativeConfirm: typeof window.confirm | null;
+        _xhr: XMLHttpRequest | null;
+        _initialized: boolean;
+        TRIGGER_SELECTOR: string;
+        init(): void;
+        bindTriggers(root?: ParentNode): void;
+        escapeHtml: typeof escapeHtml;
+        escapeAttr: typeof escapeAttr;
+        isSafeUrl: typeof isSafeUrl;
+        sanitizeUrl: typeof sanitizeUrl;
+        abortAjax(): void;
+        ajax(url: string, target?: HTMLElement): false | null;
+        open(evt: unknown, type?: string): void;
+        getContent(model: Parameters<Modal["getContent"]>[0]): import("./types.js").ModalContent;
+    };
+};
+export type LegacyGlobals = ReturnType<typeof createLegacyGlobals>;
