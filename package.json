@@ -1,0 +1,37 @@
+{
+  "name": "@caesax/cxmodal",
+  "version": "2.0.0-alpha.1",
+  "description": "Small but flexible modal/lightbox for Maestro, Slojdportfolio, and legacy data-cxmodal sites",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/cxmodal.cjs",
+  "module": "./dist/cxmodal.esm.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/cxmodal.esm.js",
+      "require": "./dist/cxmodal.cjs"
+    },
+    "./legacy": "./dist/legacy.iife.js",
+    "./styles.css": "./dist/cxmodal.css"
+  },
+  "files": [
+    "dist",
+    "styles"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:css": "sass styles/cxmodal.scss dist/cxmodal.css --no-source-map && sass styles/cxmodal.scss dist/cxmodal.min.css --style=compressed --no-source-map",
+    "prebuild": "npm run build:css"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "sass": "^1.85.0",
+    "typescript": "^5.8.2"
+  },
+  "sideEffects": [
+    "*.css",
+    "./dist/legacy.iife.js"
+  ]
+}

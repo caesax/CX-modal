@@ -1,0 +1,45 @@
+import { TriggerModel } from "./types.js";
+declare const globals: {
+    CXmodel: typeof TriggerModel;
+    CXview: {
+        TEMPLATE: string;
+        elem: HTMLElement | null;
+        modal: import("./types.js").TriggerModelLike | null;
+        bgrElem: HTMLElement | null;
+        previousFocus: Element | null;
+        offsetX: number;
+        offsetY: number;
+        FOCUSABLE: string;
+        init(settings?: Parameters<import("./modal.js").Modal["open"]>[1]): void;
+        open(content: Parameters<import("./modal.js").Modal["open"]>[0], settings?: Parameters<import("./modal.js").Modal["open"]>[1], modal?: Parameters<import("./modal.js").Modal["open"]>[2]): void;
+        close(ok?: boolean): void;
+        lockScroll(): void;
+        unlockScroll(): void;
+        bindKeys(): void;
+        unbindKeys(): void;
+        trapFocus(event: KeyboardEvent): void;
+        dragStart(event: MouseEvent): void;
+        drag(event: MouseEvent): void;
+        dragStop(): void;
+    };
+    CXcontrol: {
+        defaults: import("./types.js").ModalOptions;
+        options: import("./types.js").ModalOptions;
+        _nativeAlert: typeof window.alert | null;
+        _nativeConfirm: typeof window.confirm | null;
+        _xhr: XMLHttpRequest | null;
+        _initialized: boolean;
+        TRIGGER_SELECTOR: string;
+        init(): void;
+        bindTriggers(root?: ParentNode): void;
+        escapeHtml: typeof import("./url-guard.js").escapeHtml;
+        escapeAttr: typeof import("./url-guard.js").escapeAttr;
+        isSafeUrl: typeof import("./url-guard.js").isSafeUrl;
+        sanitizeUrl: typeof import("./url-guard.js").sanitizeUrl;
+        abortAjax(): void;
+        ajax(url: string, target?: HTMLElement): false | null;
+        open(evt: unknown, type?: string): void;
+        getContent(model: Parameters<import("./modal.js").Modal["getContent"]>[0]): import("./types.js").ModalContent;
+    };
+};
+export default globals;
